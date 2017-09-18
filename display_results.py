@@ -13,7 +13,7 @@ for index in range(0, 10):
 
 # fill in digit matrices
 df = pd.read_csv('train.csv')
-df_subset = df.sample(n=500)
+df_subset = df.sample(n=500, random_state=21)
 df_train = df_subset.sample(frac=0.8)
 df_test = df_subset.drop(df_train.index)
 
@@ -34,8 +34,8 @@ for i in range(0, 10):
 def getMatrixDifferences(digit_matrix):
 	differences = []
 	for i in range(0, 10):
-		diff_matrix = digit_matrices[i] - digit_matrix
-		difference = abs(np.sum(abs(diff_matrix)))
+		diff_matrix = np.square(digit_matrices[i] - digit_matrix)
+		difference = np.sum(abs(diff_matrix))
 		differences.append(difference)
 	return differences
 
@@ -59,7 +59,7 @@ for index, row in df_test[:10].iterrows():
 
 def graph_shadows(imgs):
 	fig = plt.figure(1)
-	fig.suptitle('Shadows')
+	fig.suptitle('ImageStacks (800 training points)')
 	for n, img in enumerate(imgs):
 		a = fig.add_subplot(2, 5, n)
 		plt.imshow(img, cmap='gray')
@@ -68,7 +68,7 @@ def graph_shadows(imgs):
 
 def graph_results(imgs, labels, correct):
 	fig = plt.figure(2)
-	fig.suptitle('Results')
+	fig.suptitle('Results (800 training points)')
 	for n, img in enumerate(imgs):
 		a = fig.add_subplot(2, 5, n)
 		plt.imshow(img, cmap='gray')
